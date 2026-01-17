@@ -1,0 +1,13 @@
+{
+  "name": "mindfully-embedded-blog",
+  "version": "1.0.0",
+  "description": "A personal blog built with raw HTML, CSS, and JavaScript fundamentals",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["blog", "personal-website"],
+  "author": "Abdulla Almosalami",
+  "license": "MIT"
+}
