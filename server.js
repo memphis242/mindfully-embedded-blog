@@ -31,53 +31,65 @@ const MIME_TYPES = {
   '.otf': 'font/otf'
 };
 
-const server = http.createServer((req, res) => {
+const server = http.createServer( (req, res) => {
   console.log(`${req.method} ${req.url}`);
-  
+
   // Parse the URL and remove query parameters
   let filePath = req.url.split('?')[0];
-  
+
   // Default to index.html for directory requests
-  if (filePath === '/') {
+  if (filePath === '/')
+  {
     filePath = '/index.html';
-  } else if (filePath.endsWith('/')) {
+  }
+  else if ( filePath.endsWith('/') )
+  {
     filePath += 'index.html';
   }
-  
+
   // Build the full file path
   const fullPath = path.join(PUBLIC_DIR, filePath);
-  
+
   // Security: ensure the path doesn't escape the public directory
-  if (!fullPath.startsWith(PUBLIC_DIR)) {
+  if ( !fullPath.startsWith(PUBLIC_DIR) )
+  {
     res.writeHead(403, { 'Content-Type': 'text/plain' });
     res.end('403 Forbidden');
+
     return;
   }
-  
+
   // Get the file extension for MIME type
   const ext = path.extname(fullPath).toLowerCase();
   const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-  
+
   // Read and serve the file
-  fs.readFile(fullPath, (err, data) => {
-    if (err) {
-      if (err.code === 'ENOENT') {
+  fs.readFile( fullPath, (err, data) => {
+    if (err)
+    {
+      if (err.code === 'ENOENT')
+      {
         res.writeHead(404, { 'Content-Type': 'text/html' });
         res.end('<h1>404 - Not Found</h1><p>The requested resource was not found.</p>');
-      } else {
+      }
+      else
+      {
         res.writeHead(500, { 'Content-Type': 'text/plain' });
         res.end('500 - Internal Server Error');
       }
+
       console.error(err);
-    } else {
+    }
+    else
+    {
       res.writeHead(200, { 'Content-Type': contentType });
       res.end(data);
     }
-  });
-});
+  }); // fs.readFile
+}); // http.createServer
 
-server.listen(PORT, () => {
+server.listen( PORT, () => {
   console.log(`\n🚀 Server running at http://localhost:${PORT}/`);
   console.log(`📁 Serving files from: ${PUBLIC_DIR}\n`);
   console.log('Press Ctrl+C to stop the server\n');
-});
+} );
