@@ -10,3 +10,26 @@
  */
 
 /* Your styles go here */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&display=swap');
+
+.title-outline {
+  font-family: 'Jetbrains Mono', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  
+  /* Fill color (inside of letters) */
+  color: #e8b43d;
+
+  /* Stroke (outline) color + thickness */
+  -webkit-text-stroke: 0px #58343c; /* dark outline */
+  text-stroke: 0px #3f252b;         /* non-prefixed for future support */
+
+  /* Optional: remove anti-aliased “halo” against backgrounds */
+  paint-order: stroke fill;
+}
+
+html, body {
+  background-color: #165a72; /* your page background */
+  color: #f5f6f7;           /* default text color */
+}
