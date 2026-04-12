@@ -1,0 +1,2 @@
+A comment I made in response to a post: [r/embedded::Measuring current with oscilloscope](https://www.reddit.com/r/embedded/comments/pgwihd/comment/hbhcvn6/?context=3&share_id=UFcpnrKQEL-3EAlKlpVkC&utm_content=1&utm_medium=ios_app&utm_name=ioscss&utm_source=share&utm_term=1):
+https://www.reddit.com/r/embedded/comments/pgwihd/comment/hbhcvn6/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
