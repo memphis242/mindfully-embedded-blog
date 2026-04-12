@@ -414,3 +414,105 @@ h1 {
     scroll-behavior: auto;
   }
 }
+
+.engagement-shell {
+  margin-top: 1.6rem;
+  border-top: 1px solid color-mix(in srgb, var(--border), white 12%);
+  padding-top: 1.2rem;
+}
+
+.reaction-row {
+  display: flex;
+  gap: 0.65rem;
+  margin: 0.7rem 0 1rem;
+}
+
+.reaction-btn.is-active {
+  color: var(--text-main);
+  border-color: color-mix(in srgb, var(--accent-main), transparent 20%);
+  background: color-mix(in srgb, var(--accent-deep), transparent 70%);
+}
+
+.comment-form,
+.comment-reply-form {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0.8rem 0;
+}
+
+.comment-form label,
+.comment-reply-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.comment-form input,
+.comment-form textarea,
+.comment-reply-form input,
+.comment-reply-form textarea {
+  width: 100%;
+  background: color-mix(in srgb, var(--bg-elev-2), black 20%);
+  border: 1px solid color-mix(in srgb, var(--border), white 12%);
+  color: var(--text-main);
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+  font-family: inherit;
+}
+
+.turnstile-wrap {
+  min-height: 68px;
+}
+
+.comment-list {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.comment-item {
+  border: 1px solid color-mix(in srgb, var(--border), white 8%);
+  background: color-mix(in srgb, var(--bg-elev-2), transparent 8%);
+  border-radius: var(--radius-md);
+  padding: 0.8rem;
+}
+
+.comment-item-reply {
+  margin-top: 0.5rem;
+  background: color-mix(in srgb, var(--bg-elev-2), black 10%);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.comment-body p {
+  margin: 0.4rem 0;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+.comment-body a {
+  color: var(--accent-main);
+}
+
+.comment-replies {
+  margin-top: 0.65rem;
+  border-left: 2px solid color-mix(in srgb, var(--accent-main), transparent 55%);
+  padding-left: 0.7rem;
+}
+
+.comment-reply-toggle {
+  margin-top: 0.5rem;
+}
+
+.hidden {
+  display: none;
+}

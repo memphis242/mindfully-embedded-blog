@@ -1,3 +1,16 @@
 name = "mindfully-embedded-blog"
 compatibility_date = "2026-04-11"
 pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mindfully-embedded-blog-db"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[[kv_namespaces]]
+binding = "RATE_LIMITS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[vars]
+ALLOWED_ORIGINS = "https://mindfullyembedded.com"
+ADMIN_IP_ALLOWLIST = ""

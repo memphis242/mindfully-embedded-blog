@@ -79,9 +79,10 @@ function articlePageTemplate(article, htmlBody) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${escapeHtml(article.title)} | MindfullyEmbedded</title>
   <meta name="description" content="${escapeHtml(article.summary)}" />
+  <meta name="meb-turnstile-site-key" content="" />
   <link rel="stylesheet" href="/css/global.css" />
 </head>
-<body class="page article-detail" data-section="articles" data-bg-image="/assets/backgrounds/articles-bg.svg">
+<body class="page article-detail" data-section="articles" data-bg-image="/assets/backgrounds/articles-bg.svg" data-page-id="article/${escapeHtml(article.slug)}">
   <div class="parallax-bg" aria-hidden="true"></div>
   <header class="site-header">
     <a class="brand" href="/">MindfullyEmbedded</a>
