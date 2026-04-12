@@ -1,4 +1,10 @@
-import { assertAdminRequest, hashWithSalt, json, logSecurityEvent, subnetFromIp } from '../../../_lib/utils.js';
+import {
+  assertAdminRequest,
+  hashWithSalt,
+  json,
+  logSecurityEvent,
+  subnetFromIp,
+} from '../../../_lib/utils.js';
 
 function parseExpiry(days) {
   if (!days) return null;
@@ -12,9 +18,9 @@ export async function onRequestGet(context) {
   const auth = assertAdminRequest(request, env);
   if (!auth.ok) return json({ ok: false, error: auth.reason }, { status: 403 });
 
-  const rows = await env.DB
-    .prepare('SELECT id, ban_type, subject_hash, reason, expires_at, created_at FROM bans ORDER BY created_at DESC LIMIT 200')
-    .all();
+  const rows = await env.DB.prepare(
+    'SELECT id, ban_type, subject_hash, reason, expires_at, created_at FROM bans ORDER BY created_at DESC LIMIT 200'
+  ).all();
 
   return json({ ok: true, bans: rows.results || [] });
 }
@@ -59,13 +65,15 @@ export async function onRequestPost(context) {
   const banId = crypto.randomUUID();
 
   if (durationExpr) {
-    await env.DB
-      .prepare(`INSERT INTO bans (id, ban_type, subject_hash, reason, expires_at, created_at) VALUES (?, ?, ?, ?, datetime('now', ?), datetime('now'))`)
+    await env.DB.prepare(
+      `INSERT INTO bans (id, ban_type, subject_hash, reason, expires_at, created_at) VALUES (?, ?, ?, ?, datetime('now', ?), datetime('now'))`
+    )
       .bind(banId, banType, subjectHash, reason, durationExpr)
       .run();
   } else {
-    await env.DB
-      .prepare(`INSERT INTO bans (id, ban_type, subject_hash, reason, expires_at, created_at) VALUES (?, ?, ?, ?, NULL, datetime('now'))`)
+    await env.DB.prepare(
+      `INSERT INTO bans (id, ban_type, subject_hash, reason, expires_at, created_at) VALUES (?, ?, ?, ?, NULL, datetime('now'))`
+    )
       .bind(banId, banType, subjectHash, reason)
       .run();
   }

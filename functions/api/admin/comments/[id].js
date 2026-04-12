@@ -26,8 +26,9 @@ export async function onRequestPost(context) {
     return json({ ok: false, error: 'invalid_action' }, { status: 400 });
   }
 
-  const result = await env.DB
-    .prepare('UPDATE comments SET status = ?, moderation_reason = ?, updated_at = datetime(\'now\') WHERE id = ?')
+  const result = await env.DB.prepare(
+    "UPDATE comments SET status = ?, moderation_reason = ?, updated_at = datetime('now') WHERE id = ?"
+  )
     .bind(action, reason, id)
     .run();
 

@@ -4,7 +4,7 @@ const path = require('path');
 const matter = require('gray-matter');
 const { marked } = require('marked');
 
-const ROOT = path.join(__dirname, '..');
+const ROOT = process.env.MEB_ROOT || path.join(__dirname, '..');
 const CONTENT_DIR = path.join(ROOT, 'content', 'articles');
 const OUTPUT_DIR = path.join(ROOT, 'public', 'articles', 'generated');
 const ARTICLES_JSON = path.join(ROOT, 'public', 'articles', 'articles.json');
@@ -33,7 +33,7 @@ function escapeHtml(input) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/\"/g, '&quot;')
+    .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 }
 
@@ -104,7 +104,7 @@ function articlePageTemplate(article, htmlBody) {
   </main>
 
   <!-- @site-footer -->
-  <script src="/js/main.js" defer></script>
+  <script type="module" src="/js/main.js"></script>
 </body>
 </html>`;
 }
@@ -142,13 +142,16 @@ function articleIndexTemplate(cards) {
   </main>
 
   <!-- @site-footer -->
-  <script src="/js/main.js" defer></script>
+  <script type="module" src="/js/main.js"></script>
 </body>
 </html>`;
 }
 
 function cardMarkup(article) {
-  const tags = article.tags.slice(0, 3).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
+  const tags = article.tags
+    .slice(0, 3)
+    .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
+    .join('');
   return `<article class="article-card">
   <h2><a href="/articles/generated/${encodeURIComponent(article.slug)}.html">${escapeHtml(article.title)}</a></h2>
   <p class="article-meta">${escapeHtml(article.date)} · ${escapeHtml(article.readTime)}</p>
@@ -183,9 +186,7 @@ function collectArticles() {
     });
   }
 
-  return articles
-    .filter((a) => a.published)
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  return articles.filter((a) => a.published).sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
 function writeOutputs(articles) {
@@ -197,7 +198,16 @@ function writeOutputs(articles) {
     fs.writeFileSync(path.join(OUTPUT_DIR, `${article.slug}.html`), fullHtml, 'utf8');
   }
 
-  const serializable = articles.map(({ htmlBody, sourceFile, ...rest }) => rest);
+  const serializable = articles.map((article) => ({
+    title: article.title,
+    slug: article.slug,
+    date: article.date,
+    summary: article.summary,
+    tags: article.tags,
+    readTime: article.readTime,
+    published: article.published,
+    url: article.url,
+  }));
   fs.writeFileSync(ARTICLES_JSON, JSON.stringify(serializable, null, 2), 'utf8');
 
   const cards = articles.map(cardMarkup).join('\n');
@@ -210,9 +220,24 @@ function run() {
   console.log(`Built ${articles.length} published article(s).`);
 }
 
-try {
-  run();
-} catch (err) {
-  console.error(`Article builder script failed: ${err.message}`);
-  process.exitCode = 1;
+if (require.main === module) {
+  try {
+    run();
+  } catch (err) {
+    console.error(`Article builder script failed: ${err.message}`);
+    process.exitCode = 1;
+  }
 }
+
+module.exports = {
+  ensureDir,
+  removeDirContents,
+  escapeHtml,
+  assertFrontmatter,
+  articlePageTemplate,
+  articleIndexTemplate,
+  cardMarkup,
+  collectArticles,
+  writeOutputs,
+  run,
+};

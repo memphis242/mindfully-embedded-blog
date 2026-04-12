@@ -16,8 +16,9 @@ export async function onRequestGet(context) {
   }
 
   const sid = verified.payload.sid;
-  const row = await env.DB
-    .prepare('SELECT reaction FROM reactions WHERE page_id = ? AND session_id = ? LIMIT 1')
+  const row = await env.DB.prepare(
+    'SELECT reaction FROM reactions WHERE page_id = ? AND session_id = ? LIMIT 1'
+  )
     .bind(pageId, sid)
     .first();
 

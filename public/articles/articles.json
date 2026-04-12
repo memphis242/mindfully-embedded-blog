@@ -4,11 +4,7 @@
     "slug": "engineering-calm-in-fault-analysis",
     "date": "2026-04-11",
     "summary": "A practical workflow for debugging embedded faults without thrashing between guesses.",
-    "tags": [
-      "embedded",
-      "debugging",
-      "workflow"
-    ],
+    "tags": ["embedded", "debugging", "workflow"],
     "readTime": "6 min",
     "published": true,
     "url": "/articles/generated/engineering-calm-in-fault-analysis.html"

@@ -33,12 +33,13 @@ export async function onRequestPost(context) {
     return json({ ok: false, error: 'reaction_rate_limited' }, { status: 429 });
   }
 
-  await env.DB
-    .prepare(`
+  await env.DB.prepare(
+    `
       INSERT INTO reactions (id, page_id, session_id, reaction, created_at, updated_at)
       VALUES (?, ?, ?, ?, datetime('now'), datetime('now'))
       ON CONFLICT(page_id, session_id) DO UPDATE SET reaction = excluded.reaction, updated_at = datetime('now')
-    `)
+    `
+  )
     .bind(crypto.randomUUID(), pageId, auth.sid, reaction)
     .run();
 

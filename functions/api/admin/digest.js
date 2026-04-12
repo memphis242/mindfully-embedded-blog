@@ -7,10 +7,18 @@ export async function onRequestGet(context) {
 
   if (!env.DB) return json({ ok: false, error: 'db_not_configured' }, { status: 500 });
 
-  const hidden = await env.DB.prepare(`SELECT COUNT(*) AS count FROM comments WHERE status = 'hidden' AND updated_at > datetime('now', '-1 day')`).first();
-  const deleted = await env.DB.prepare(`SELECT COUNT(*) AS count FROM comments WHERE status = 'deleted' AND updated_at > datetime('now', '-1 day')`).first();
-  const held = await env.DB.prepare(`SELECT COUNT(*) AS count FROM comments WHERE status = 'held' AND created_at > datetime('now', '-1 day')`).first();
-  const bans = await env.DB.prepare(`SELECT COUNT(*) AS count FROM bans WHERE created_at > datetime('now', '-1 day')`).first();
+  const hidden = await env.DB.prepare(
+    `SELECT COUNT(*) AS count FROM comments WHERE status = 'hidden' AND updated_at > datetime('now', '-1 day')`
+  ).first();
+  const deleted = await env.DB.prepare(
+    `SELECT COUNT(*) AS count FROM comments WHERE status = 'deleted' AND updated_at > datetime('now', '-1 day')`
+  ).first();
+  const held = await env.DB.prepare(
+    `SELECT COUNT(*) AS count FROM comments WHERE status = 'held' AND created_at > datetime('now', '-1 day')`
+  ).first();
+  const bans = await env.DB.prepare(
+    `SELECT COUNT(*) AS count FROM bans WHERE created_at > datetime('now', '-1 day')`
+  ).first();
 
   return json({
     ok: true,

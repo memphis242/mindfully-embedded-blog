@@ -54,11 +54,17 @@ export async function hashWithSalt(value, salt) {
 }
 
 export async function ipHash(request, env) {
-  return hashWithSalt(getIp(request), String(env.IP_HASH_SALT || env.APP_SIGNING_SECRET || 'fallback-salt'));
+  return hashWithSalt(
+    getIp(request),
+    String(env.IP_HASH_SALT || env.APP_SIGNING_SECRET || 'fallback-salt')
+  );
 }
 
 export async function uaHash(request, env) {
-  return hashWithSalt(getUserAgent(request), String(env.IP_HASH_SALT || env.APP_SIGNING_SECRET || 'fallback-salt'));
+  return hashWithSalt(
+    getUserAgent(request),
+    String(env.IP_HASH_SALT || env.APP_SIGNING_SECRET || 'fallback-salt')
+  );
 }
 
 export function subnetFromIp(ip) {
@@ -81,13 +87,11 @@ function expandIpv6(ip) {
   const missing = 8 - (leftParts.length + rightParts.length);
   if (missing < 0) return null;
 
-  const full = [
-    ...leftParts,
-    ...Array(missing).fill('0'),
-    ...rightParts,
-  ].map((part) => part.padStart(4, '0'));
+  const full = [...leftParts, ...Array(missing).fill('0'), ...rightParts].map((part) =>
+    part.padStart(4, '0')
+  );
 
-  if (full.length !== 8) return null;
+  if (full.some((part) => !/^[0-9a-f]{4}$/i.test(part))) return null;
   return full.join('');
 }
 
@@ -126,7 +130,10 @@ export async function issueSessionToken(env, ttlSeconds = 86400) {
   };
 
   const payloadEncoded = base64UrlEncode(JSON.stringify(payload));
-  const signature = await hmacSign(payloadEncoded, String(env.APP_SIGNING_SECRET || 'dev-signing-secret'));
+  const signature = await hmacSign(
+    payloadEncoded,
+    String(env.APP_SIGNING_SECRET || 'dev-signing-secret')
+  );
   return `${payloadEncoded}.${signature}`;
 }
 
@@ -135,7 +142,10 @@ export async function verifySessionToken(token, env) {
   const [payloadEncoded, signature] = token.split('.');
   if (!payloadEncoded || !signature) return { ok: false, reason: 'missing_or_malformed' };
 
-  const expectedSig = await hmacSign(payloadEncoded, String(env.APP_SIGNING_SECRET || 'dev-signing-secret'));
+  const expectedSig = await hmacSign(
+    payloadEncoded,
+    String(env.APP_SIGNING_SECRET || 'dev-signing-secret')
+  );
   if (signature !== expectedSig) return { ok: false, reason: 'bad_signature' };
 
   let payload;
@@ -234,7 +244,9 @@ export async function checkAndConsumeRateLimit(env, key, limit, windowSeconds) {
 }
 
 export function validateDisplayName(value) {
-  const trimmed = String(value || '').trim().replace(/\s+/g, ' ');
+  const trimmed = String(value || '')
+    .trim()
+    .replace(/\s+/g, ' ');
   if (!trimmed) {
     return { ok: false, reason: 'empty' };
   }
@@ -252,12 +264,12 @@ export function validateDisplayName(value) {
 
 export function markdownToSafeHtml(markdown) {
   const src = String(markdown || '').trim();
-  const escaped = src
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+  const escaped = src.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-  const linked = escaped.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer noopener">$1</a>');
+  const linked = escaped.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noreferrer noopener">$1</a>'
+  );
   const bold = linked.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   const italic = bold.replace(/\*([^*]+)\*/g, '<em>$1</em>');
   const code = italic.replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -300,8 +312,9 @@ export function generateFunnyName() {
 export async function logSecurityEvent(env, eventType, payload) {
   if (!env.DB) return;
 
-  await env.DB
-    .prepare(`INSERT INTO moderation_audit (id, action, target_type, target_id, actor, reason, metadata_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))`)
+  await env.DB.prepare(
+    `INSERT INTO moderation_audit (id, action, target_type, target_id, actor, reason, metadata_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))`
+  )
     .bind(
       crypto.randomUUID(),
       eventType,
@@ -317,8 +330,9 @@ export async function logSecurityEvent(env, eventType, payload) {
 export async function isBanned(env, ipHashValue, subnetHashValue) {
   if (!env.DB) return { banned: false };
 
-  const res = await env.DB
-    .prepare(`SELECT id, ban_type, reason, expires_at FROM bans WHERE (subject_hash = ? OR subject_hash = ?) AND (expires_at IS NULL OR expires_at > datetime('now')) LIMIT 1`)
+  const res = await env.DB.prepare(
+    `SELECT id, ban_type, reason, expires_at FROM bans WHERE (subject_hash = ? OR subject_hash = ?) AND (expires_at IS NULL OR expires_at > datetime('now')) LIMIT 1`
+  )
     .bind(ipHashValue, subnetHashValue || '')
     .first();
 
@@ -368,15 +382,19 @@ export async function authenticateWriteRequest(request, env) {
   const uaHashValue = await uaHash(request, env);
   const subnet = subnetFromIp(getIp(request));
   const subnetHashValue = subnet
-    ? await hashWithSalt(subnet, String(env.IP_HASH_SALT || env.APP_SIGNING_SECRET || 'fallback-salt'))
+    ? await hashWithSalt(
+        subnet,
+        String(env.IP_HASH_SALT || env.APP_SIGNING_SECRET || 'fallback-salt')
+      )
     : null;
 
   if (!env.DB) {
     return { ok: false, status: 500, error: 'db_not_configured' };
   }
 
-  const fingerprint = await env.DB
-    .prepare('SELECT ip_hash, ua_hash, expires_at FROM session_fingerprints WHERE session_id = ? LIMIT 1')
+  const fingerprint = await env.DB.prepare(
+    'SELECT ip_hash, ua_hash, expires_at FROM session_fingerprints WHERE session_id = ? LIMIT 1'
+  )
     .bind(sid)
     .first();
 

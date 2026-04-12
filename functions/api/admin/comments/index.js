@@ -8,14 +8,14 @@ export async function onRequestGet(context) {
 
   if (!env.DB) return json({ ok: false, error: 'db_not_configured' }, { status: 500 });
 
-  const rows = await env.DB
-    .prepare(`
+  const rows = await env.DB.prepare(
+    `
       SELECT id, page_id, parent_id, display_name, markdown_raw, status, moderation_reason, created_at
       FROM comments
       ORDER BY created_at DESC
       LIMIT 200
-    `)
-    .all();
+    `
+  ).all();
 
   return json({ ok: true, comments: rows.results || [] });
 }

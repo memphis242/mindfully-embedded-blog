@@ -4,6 +4,7 @@ node_modules/
 # Logs
 *.log
 npm-debug.log*
+coverage/
 
 # OS files
 .DS_Store
@@ -14,6 +15,7 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+.husky/_/
 
 # Environment variables
 .env

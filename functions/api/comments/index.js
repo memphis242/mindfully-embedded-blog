@@ -34,14 +34,15 @@ export async function onRequestGet(context) {
     return json({ ok: false, error: 'db_not_configured' }, { status: 500 });
   }
 
-  const rows = await env.DB
-    .prepare(`
+  const rows = await env.DB.prepare(
+    `
       SELECT id, page_id, parent_id, display_name, markdown_html_sanitized, created_at, status
       FROM comments
       WHERE page_id = ? AND status = 'visible'
       ORDER BY created_at ASC
       LIMIT 300
-    `)
+    `
+  )
     .bind(pageId)
     .all();
 
@@ -95,7 +96,12 @@ export async function onRequestPost(context) {
   if (!commentDaily.ok) return json({ ok: false, error: 'comment_daily_limited' }, { status: 429 });
 
   if (parentId) {
-    const replyDaily = await checkAndConsumeRateLimit(env, `${rateKeyBase}:reply:${pageId}`, 5, 86400);
+    const replyDaily = await checkAndConsumeRateLimit(
+      env,
+      `${rateKeyBase}:reply:${pageId}`,
+      5,
+      86400
+    );
     if (!replyDaily.ok) return json({ ok: false, error: 'reply_daily_limited' }, { status: 429 });
   }
 
@@ -107,8 +113,9 @@ export async function onRequestPost(context) {
   }
 
   if (parentId) {
-    const parent = await env.DB
-      .prepare('SELECT id, parent_id, page_id FROM comments WHERE id = ? LIMIT 1')
+    const parent = await env.DB.prepare(
+      'SELECT id, parent_id, page_id FROM comments WHERE id = ? LIMIT 1'
+    )
       .bind(parentId)
       .first();
 
@@ -132,8 +139,9 @@ export async function onRequestPost(context) {
     displayName = validated.value;
   } else {
     displayName = generateFunnyName();
-    const existing = await env.DB
-      .prepare('SELECT COUNT(*) AS count FROM comments WHERE page_id = ? AND display_name = ?')
+    const existing = await env.DB.prepare(
+      'SELECT COUNT(*) AS count FROM comments WHERE page_id = ? AND display_name = ?'
+    )
       .bind(pageId, displayName)
       .first();
 
@@ -149,14 +157,15 @@ export async function onRequestPost(context) {
   const htmlSafe = markdownToSafeHtml(markdown);
   const commentId = crypto.randomUUID();
 
-  await env.DB
-    .prepare(`
+  await env.DB.prepare(
+    `
       INSERT INTO comments (
         id, page_id, parent_id, session_id, ip_hash, display_name,
         markdown_raw, markdown_html_sanitized, status, moderation_reason,
         created_at, updated_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
-    `)
+    `
+  )
     .bind(
       commentId,
       pageId,

@@ -7,7 +7,9 @@ export async function onRequestPost(context) {
 
   if (!env.DB) return json({ ok: false, error: 'db_not_configured' }, { status: 500 });
 
-  await env.DB.prepare(`DELETE FROM moderation_audit WHERE created_at < datetime('now', '-90 day')`).run();
+  await env.DB.prepare(
+    `DELETE FROM moderation_audit WHERE created_at < datetime('now', '-90 day')`
+  ).run();
   await env.DB.prepare(`DELETE FROM session_fingerprints WHERE expires_at < datetime('now')`).run();
 
   await logSecurityEvent(env, 'admin_maintenance', {

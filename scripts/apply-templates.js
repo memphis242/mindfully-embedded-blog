@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.join(__dirname, '..');
+const ROOT = process.env.MEB_ROOT || path.join(__dirname, '..');
 const PUBLIC_DIR = path.join(ROOT, 'public');
 const TEMPLATES_DIR = path.join(ROOT, 'templates');
 const FOOTER_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'footer.html');
@@ -61,13 +61,22 @@ function run() {
 
   console.log(`Applied footer template to ${applied} page(s).`);
   if (unchanged > 0) {
-    console.log(`${unchanged}/${unchanged + applied} pages skipped (no footer token or footer block found).`);
+    console.log(
+      `${unchanged}/${unchanged + applied} pages skipped (no footer token or footer block found).`
+    );
   }
 }
 
-try {
-  run();
-} catch (err) {
-  console.error(`Template applicator script failed: ${err.message}`);
-  process.exitCode = 1;
+if (require.main === module) {
+  try {
+    run();
+  } catch (err) {
+    console.error(`Template applicator script failed: ${err.message}`);
+    process.exitCode = 1;
+  }
 }
+
+module.exports = {
+  walkHtmlFiles,
+  run,
+};

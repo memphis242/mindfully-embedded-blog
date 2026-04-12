@@ -4,9 +4,25 @@
   "description": "A personal blog built with raw HTML, CSS, and JavaScript fundamentals",
   "main": "server.js",
   "scripts": {
-    "build": "node scripts/build-articles.js && node scripts/apply-templates.js",
+    "build": "node scripts/build-articles.js && node scripts/apply-templates.js && prettier --write \"public/**/*.html\" \"public/articles/articles.json\"",
     "start": "npm run build && node server.js",
-    "dev": "npm run build && node server.js"
+    "dev": "npm run build && node server.js",
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:html",
+    "lint:js": "eslint .",
+    "lint:css": "stylelint \"public/css/**/*.css\"",
+    "lint:html": "htmlhint \"public/**/*.html\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "quality": "npm run format:check && npm run lint && npm run test && npm run build",
+    "security:deps": "npm audit --audit-level=high",
+    "security:sast": "semgrep --config p/javascript --error --exclude node_modules",
+    "security:secrets": "gitleaks detect --no-git --source . --redact --exit-code 1",
+    "security": "npm run security:deps && npm run security:sast && npm run security:secrets",
+    "prepare": "husky"
   },
   "keywords": [
     "blog",
@@ -14,8 +30,38 @@
   ],
   "author": "Abdulla Almosalami",
   "license": "MIT",
+  "lint-staged": {
+    "*.{js,mjs,css,html,json,md}": [
+      "prettier --check"
+    ],
+    "*.js": [
+      "eslint"
+    ],
+    "*.css": [
+      "stylelint"
+    ],
+    "*.html": [
+      "htmlhint"
+    ]
+  },
   "dependencies": {
     "gray-matter": "^4.0.3",
     "marked": "^15.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@testing-library/dom": "^10.4.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.1.1",
+    "globals": "^15.15.0",
+    "htmlhint": "^1.6.3",
+    "husky": "^9.1.7",
+    "jsdom": "^26.0.0",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.3",
+    "stylelint": "^16.14.1",
+    "stylelint-config-standard": "^37.0.0",
+    "vitest": "^3.0.8"
   }
 }

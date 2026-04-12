@@ -1,0 +1,16 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "alpha-value-notation": null,
+    "color-function-notation": null,
+    "selector-class-pattern": null,
+    "no-descending-specificity": null,
+    "media-feature-range-notation": null,
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": ["color-mix"]
+      }
+    ]
+  }
+}

@@ -1,112 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Moderation Admin | MindfullyEmbedded</title>
-  <meta name="description" content="Admin moderation dashboard" />
-  <link rel="stylesheet" href="/css/global.css" />
-</head>
-<body class="page" data-section="stories" data-bg-image="/assets/backgrounds/stories-bg.svg">
-  <div class="parallax-bg" aria-hidden="true"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moderation Admin | MindfullyEmbedded</title>
+    <meta name="description" content="Admin moderation dashboard" />
+    <link rel="stylesheet" href="/css/global.css" />
+  </head>
+  <body class="page" data-section="stories" data-bg-image="/assets/backgrounds/stories-bg.svg">
+    <div class="parallax-bg" aria-hidden="true"></div>
 
-  <header class="site-header">
-    <a class="brand" href="/">MindfullyEmbedded</a>
-    <nav class="site-nav" aria-label="Primary">
-      <a href="/articles/">Articles</a>
-      <a href="/portfolio/">Portfolio</a>
-      <a href="/professional/">Bio</a>
-      <a href="/success-stories/">Success Stories</a>
-    </nav>
-  </header>
+    <header class="site-header">
+      <a class="brand" href="/">MindfullyEmbedded</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/articles/">Articles</a>
+        <a href="/portfolio/">Portfolio</a>
+        <a href="/professional/">Bio</a>
+        <a href="/success-stories/">Success Stories</a>
+      </nav>
+    </header>
 
-  <main class="container section-shell">
-    <p class="eyebrow">Admin</p>
-    <h1>Moderation Dashboard</h1>
-    <p class="lede">Requires Cloudflare Access and service token header value for admin APIs.</p>
+    <main class="container section-shell">
+      <p class="eyebrow">Admin</p>
+      <h1>Moderation Dashboard</h1>
+      <p class="lede">Requires Cloudflare Access and service token header value for admin APIs.</p>
 
-    <label>
-      Admin service token
-      <input id="admin-token" type="password" placeholder="Paste x-admin-service-token value" />
-    </label>
-    <div class="contact-row">
-      <button class="btn" id="load-comments" type="button">Load comments</button>
-      <button class="btn subtle" id="load-digest" type="button">Load digest</button>
-      <button class="btn subtle" id="run-cleanup" type="button">Run cleanup</button>
-    </div>
-
-    <h2>Digest</h2>
-    <pre id="digest-output" class="panel">Not loaded.</pre>
-
-    <h2>Comments</h2>
-    <div id="admin-comments" class="article-grid"></div>
-
-    <h2>Bans</h2>
-    <form id="ban-form" class="comment-form">
       <label>
-        IP address to hash-ban (optional)
-        <input name="ipAddress" type="text" placeholder="203.0.113.42" />
+        Admin service token
+        <input id="admin-token" type="password" placeholder="Paste x-admin-service-token value" />
       </label>
-      <label>
-        IP address for subnet ban (optional)
-        <input name="subnetFromIp" type="text" placeholder="203.0.113.42" />
-      </label>
-      <label>
-        Ban reason
-        <input name="reason" type="text" value="abusive traffic" />
-      </label>
-      <label>
-        Expires in days (empty = permanent)
-        <input name="expiresInDays" type="number" min="1" max="365" />
-      </label>
-      <button class="btn" type="submit">Create ban</button>
-    </form>
-    <pre id="ban-output" class="panel">No ban events yet.</pre>
-  </main>
+      <div class="contact-row">
+        <button class="btn" id="load-comments" type="button">Load comments</button>
+        <button class="btn subtle" id="load-digest" type="button">Load digest</button>
+        <button class="btn subtle" id="run-cleanup" type="button">Run cleanup</button>
+      </div>
 
-  <footer class="site-footer container">
-  <p>Abdulla Almosalami ○ Keep going. Keep growing. ☺</p>
-</footer>
+      <h2>Digest</h2>
+      <pre id="digest-output" class="panel">Not loaded.</pre>
 
+      <h2>Comments</h2>
+      <div id="admin-comments" class="article-grid"></div>
 
+      <h2>Bans</h2>
+      <form id="ban-form" class="comment-form">
+        <label>
+          IP address to hash-ban (optional)
+          <input name="ipAddress" type="text" placeholder="203.0.113.42" />
+        </label>
+        <label>
+          IP address for subnet ban (optional)
+          <input name="subnetFromIp" type="text" placeholder="203.0.113.42" />
+        </label>
+        <label>
+          Ban reason
+          <input name="reason" type="text" value="abusive traffic" />
+        </label>
+        <label>
+          Expires in days (empty = permanent)
+          <input name="expiresInDays" type="number" min="1" max="365" />
+        </label>
+        <button class="btn" type="submit">Create ban</button>
+      </form>
+      <pre id="ban-output" class="panel">No ban events yet.</pre>
+    </main>
 
-  <script src="/js/main.js" defer></script>
-  <script>
-    (() => {
-      const tokenInput = document.getElementById('admin-token');
-      const commentsMount = document.getElementById('admin-comments');
-      const digestOutput = document.getElementById('digest-output');
-      const banOutput = document.getElementById('ban-output');
+    <footer class="site-footer container">
+      <p>Abdulla Almosalami ○ Keep going. Keep growing. ☺</p>
+    </footer>
 
-      function tokenHeaders() {
-        return {
-          'Content-Type': 'application/json',
-          'x-admin-service-token': tokenInput.value.trim(),
-        };
-      }
+    <script type="module" src="/js/main.js"></script>
+    <script>
+      (() => {
+        const tokenInput = document.getElementById('admin-token');
+        const commentsMount = document.getElementById('admin-comments');
+        const digestOutput = document.getElementById('digest-output');
+        const banOutput = document.getElementById('ban-output');
 
-      async function loadComments() {
-        commentsMount.innerHTML = '<p class="article-meta">Loading...</p>';
-
-        const res = await fetch('/api/admin/comments', { headers: tokenHeaders() });
-        const payload = await res.json();
-
-        if (!res.ok || !payload.ok) {
-          commentsMount.innerHTML = `<p class="article-meta">Error: ${payload.error || res.status}</p>`;
-          return;
+        function tokenHeaders() {
+          return {
+            'Content-Type': 'application/json',
+            'x-admin-service-token': tokenInput.value.trim(),
+          };
         }
 
-        const comments = payload.comments || [];
-        if (!comments.length) {
-          commentsMount.innerHTML = '<p class="article-meta">No comments found.</p>';
-          return;
-        }
+        async function loadComments() {
+          commentsMount.innerHTML = '<p class="article-meta">Loading...</p>';
 
-        commentsMount.innerHTML = '';
-        for (const comment of comments) {
-          const card = document.createElement('article');
-          card.className = 'article-card';
-          card.innerHTML = `
+          const res = await fetch('/api/admin/comments', { headers: tokenHeaders() });
+          const payload = await res.json();
+
+          if (!res.ok || !payload.ok) {
+            commentsMount.innerHTML = `<p class="article-meta">Error: ${payload.error || res.status}</p>`;
+            return;
+          }
+
+          const comments = payload.comments || [];
+          if (!comments.length) {
+            commentsMount.innerHTML = '<p class="article-meta">No comments found.</p>';
+            return;
+          }
+
+          commentsMount.innerHTML = '';
+          for (const comment of comments) {
+            const card = document.createElement('article');
+            card.className = 'article-card';
+            card.innerHTML = `
             <h3>${comment.display_name} <span class="article-meta">(${comment.status})</span></h3>
             <p class="article-meta">${comment.page_id} · ${comment.created_at}</p>
             <p>${comment.markdown_raw}</p>
@@ -117,64 +115,61 @@
             </div>
           `;
 
-          card.querySelectorAll('button[data-action]').forEach((btn) => {
-            btn.addEventListener('click', async () => {
-              const action = btn.dataset.action;
-              const response = await fetch(`/api/admin/comments/${comment.id}`, {
-                method: 'POST',
-                headers: tokenHeaders(),
-                body: JSON.stringify({ action, reason: 'admin-dashboard' }),
+            card.querySelectorAll('button[data-action]').forEach((btn) => {
+              btn.addEventListener('click', async () => {
+                const action = btn.dataset.action;
+                const response = await fetch(`/api/admin/comments/${comment.id}`, {
+                  method: 'POST',
+                  headers: tokenHeaders(),
+                  body: JSON.stringify({ action, reason: 'admin-dashboard' }),
+                });
+
+                const outcome = await response.json();
+                if (!response.ok || !outcome.ok) {
+                  alert(`Failed: ${outcome.error || response.status}`);
+                  return;
+                }
+
+                loadComments();
               });
-
-              const outcome = await response.json();
-              if (!response.ok || !outcome.ok) {
-                alert(`Failed: ${outcome.error || response.status}`);
-                return;
-              }
-
-              loadComments();
             });
-          });
 
-          commentsMount.appendChild(card);
+            commentsMount.appendChild(card);
+          }
         }
-      }
 
-      async function loadDigest() {
-        const res = await fetch('/api/admin/digest', { headers: tokenHeaders() });
-        const payload = await res.json();
-        digestOutput.textContent = JSON.stringify(payload, null, 2);
-      }
+        async function loadDigest() {
+          const res = await fetch('/api/admin/digest', { headers: tokenHeaders() });
+          const payload = await res.json();
+          digestOutput.textContent = JSON.stringify(payload, null, 2);
+        }
 
-      async function runCleanup() {
-        const res = await fetch('/api/admin/maintenance', {
-          method: 'POST',
-          headers: tokenHeaders(),
-          body: '{}',
+        async function runCleanup() {
+          const res = await fetch('/api/admin/maintenance', {
+            method: 'POST',
+            headers: tokenHeaders(),
+            body: '{}',
+          });
+          const payload = await res.json();
+          digestOutput.textContent = JSON.stringify(payload, null, 2);
+        }
+
+        document.getElementById('load-comments').addEventListener('click', loadComments);
+        document.getElementById('load-digest').addEventListener('click', loadDigest);
+        document.getElementById('run-cleanup').addEventListener('click', runCleanup);
+
+        document.getElementById('ban-form').addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const data = Object.fromEntries(new FormData(event.target).entries());
+          const res = await fetch('/api/admin/bans', {
+            method: 'POST',
+            headers: tokenHeaders(),
+            body: JSON.stringify(data),
+          });
+          const payload = await res.json();
+          banOutput.textContent = JSON.stringify(payload, null, 2);
         });
-        const payload = await res.json();
-        digestOutput.textContent = JSON.stringify(payload, null, 2);
-      }
-
-      document.getElementById('load-comments').addEventListener('click', loadComments);
-      document.getElementById('load-digest').addEventListener('click', loadDigest);
-      document.getElementById('run-cleanup').addEventListener('click', runCleanup);
-
-      document.getElementById('ban-form').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const data = Object.fromEntries(new FormData(event.target).entries());
-        const res = await fetch('/api/admin/bans', {
-          method: 'POST',
-          headers: tokenHeaders(),
-          body: JSON.stringify(data),
-        });
-        const payload = await res.json();
-        banOutput.textContent = JSON.stringify(payload, null, 2);
-      });
-    })();
-  </script>
-</body>
+      })();
+    </script>
+  </body>
 </html>
-
-
-

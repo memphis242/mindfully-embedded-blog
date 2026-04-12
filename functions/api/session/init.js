@@ -40,8 +40,8 @@ export async function onRequestPost(context) {
     const ipHashValue = await ipHash(request, env);
     const uaHashValue = await uaHash(request, env);
 
-    await env.DB
-      .prepare(`
+    await env.DB.prepare(
+      `
         INSERT INTO session_fingerprints (session_id, ip_hash, ua_hash, expires_at, updated_at)
         VALUES (?, ?, ?, datetime('now', '+1 day'), datetime('now'))
         ON CONFLICT(session_id) DO UPDATE SET
@@ -49,7 +49,8 @@ export async function onRequestPost(context) {
           ua_hash = excluded.ua_hash,
           expires_at = excluded.expires_at,
           updated_at = excluded.updated_at
-      `)
+      `
+    )
       .bind(payload.sid, ipHashValue, uaHashValue)
       .run();
   }
