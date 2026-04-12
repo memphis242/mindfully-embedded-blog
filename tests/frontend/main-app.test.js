@@ -86,6 +86,12 @@ describe('main-app module', () => {
     expect(document.querySelector('a[href="/d"]')).toBeNull();
   });
 
+  it('renderLatestArticles no-ops when mount target does not exist', async () => {
+    const fetchMock = vi.fn();
+    await app.renderLatestArticles(document, fetchMock);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('renderLatestArticles handles empty and failed responses', async () => {
     document.body.innerHTML = '<div id="latest-articles"></div>';
     await app.renderLatestArticles(document, vi.fn(async () => jsonResponse([])));
@@ -132,6 +138,14 @@ describe('main-app module', () => {
     script.dispatchEvent(new Event('load'));
     expect(render).toHaveBeenCalledOnce();
     expect(state.turnstileToken).toBe('abc');
+  });
+
+  it('loadTurnstile load callback exits when turnstile is unavailable', () => {
+    const container = document.createElement('div');
+    const state = { turnstileToken: 'existing' };
+    app.loadTurnstile('site-key', container, state, document, {});
+    document.querySelector('script[data-turnstile-loader]').dispatchEvent(new Event('load'));
+    expect(state.turnstileToken).toBe('existing');
   });
 
   it('loadTurnstile returns when site key is not provided', () => {
@@ -215,6 +229,27 @@ describe('main-app module', () => {
     expect(loadComments).toHaveBeenCalledOnce();
   });
 
+  it('createCommentNode sets published text on successful non-held reply', async () => {
+    const feedback = document.createElement('p');
+    const node = app.createCommentNode(
+      { id: 1, displayName: 'user', createdAt: 'now', html: '<p>hi</p>', replies: [] },
+      'article/test',
+      document.createElement('section'),
+      { turnstileToken: 'tok', feedback },
+      {
+        fetch: vi.fn(async () => jsonResponse({ ok: true, status: 'visible' })),
+        initWriteSession: vi.fn(async () => {}),
+        loadComments: vi.fn(async () => {}),
+      }
+    );
+
+    node.querySelector('.comment-reply-form').dispatchEvent(
+      new Event('submit', { bubbles: true, cancelable: true })
+    );
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(feedback.textContent).toContain('Reply published');
+  });
+
   it('createCommentNode handles reply API failure', async () => {
     const feedback = document.createElement('p');
     const node = app.createCommentNode(
@@ -237,6 +272,27 @@ describe('main-app module', () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(feedback.textContent).toContain('Reply failed');
+  });
+
+  it('createCommentNode uses default reply_failed when API error body omits message', async () => {
+    const feedback = document.createElement('p');
+    const node = app.createCommentNode(
+      { id: 1, displayName: 'user', createdAt: 'now', html: '<p>hi</p>', replies: [] },
+      'article/test',
+      document.createElement('section'),
+      { turnstileToken: 'tok', feedback },
+      {
+        fetch: vi.fn(async () => jsonResponse({ ok: false }, false, 500)),
+        initWriteSession: vi.fn(async () => {}),
+        loadComments: vi.fn(async () => {}),
+      }
+    );
+
+    node.querySelector('.comment-reply-form').dispatchEvent(
+      new Event('submit', { bubbles: true, cancelable: true })
+    );
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(feedback.textContent).toContain('reply_failed');
   });
 
   it('loadComments renders fallback states and loaded comments', async () => {
@@ -271,6 +327,25 @@ describe('main-app module', () => {
       createCommentNode: createNode,
     });
     expect(mount.textContent).toContain('Unable to load comments');
+
+    await app.loadComments('p1', mount, state, {
+      fetch: vi.fn(async () => jsonResponse({ ok: false }, false, 500)),
+      createCommentNode: createNode,
+    });
+    expect(mount.textContent).toContain('comments_load_failed');
+
+    await app.loadComments('p1', mount, state, {
+      fetch: vi.fn(async () => jsonResponse({ ok: true })),
+      createCommentNode: createNode,
+    });
+    expect(mount.textContent).toContain('No comments yet');
+  });
+
+  it('loadComments returns early when list container is missing', async () => {
+    const mount = document.createElement('section');
+    const fetchMock = vi.fn();
+    await app.loadComments('p1', mount, {}, { fetch: fetchMock, createCommentNode: vi.fn() });
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('initEngagementFeatures wires reactions and blocks comment when token missing', async () => {
@@ -366,6 +441,40 @@ describe('main-app module', () => {
     expect(document.querySelector('.comment-feedback').textContent).toContain('Comment failed');
   });
 
+  it('initEngagementFeatures tolerates reaction state load exceptions', async () => {
+    document.body.dataset.pageId = 'article/reactions-load-ex';
+    document.body.innerHTML = '<main class="section-shell"></main>';
+    const fetchMock = vi.fn(async (url) => {
+      if (String(url).startsWith('/api/reactions/me')) {
+        throw new Error('network');
+      }
+      if (String(url).startsWith('/api/comments?pageId=')) {
+        return jsonResponse({ ok: true, comments: [] });
+      }
+      return jsonResponse({ ok: true });
+    });
+
+    await app.initEngagementFeatures(document, fetchMock);
+    expect(document.querySelector('.engagement-shell')).not.toBeNull();
+  });
+
+  it('initEngagementFeatures reaction failure uses default reaction_failed fallback', async () => {
+    document.body.dataset.pageId = 'article/rx';
+    document.body.innerHTML = '<main class="section-shell"></main>';
+    const fetchMock = vi.fn(async (url) => {
+      if (String(url).startsWith('/api/reactions/me')) return jsonResponse({ ok: true });
+      if (String(url).startsWith('/api/comments?pageId=')) return jsonResponse({ ok: true, comments: [] });
+      if (url === '/api/session/init') return jsonResponse({ ok: true });
+      if (url === '/api/reactions') return jsonResponse({ ok: false }, false, 500);
+      return jsonResponse({ ok: true });
+    });
+
+    await app.initEngagementFeatures(document, fetchMock);
+    document.querySelector('.reaction-btn[data-reaction="like"]').click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(document.querySelector('.comment-feedback').textContent).toContain('reaction_failed');
+  });
+
   it('initEngagementFeatures publishes comment when turnstile is ready', async () => {
     document.body.dataset.pageId = 'article/z';
     document.body.innerHTML = '<meta name="meb-turnstile-site-key" content="site-key"><main class="section-shell"></main>';
@@ -403,6 +512,45 @@ describe('main-app module', () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(document.querySelector('.comment-feedback').textContent).toContain('Comment published as anon-fox');
+  });
+
+  it('initEngagementFeatures shows held comment message and default comment_failed fallback', async () => {
+    document.body.dataset.pageId = 'article/held';
+    document.body.innerHTML =
+      '<meta name="meb-turnstile-site-key" content="site-key"><main class="section-shell"></main>';
+
+    window.turnstile = {
+      render: (_container, config) => {
+        config.callback('tok-held');
+      },
+    };
+
+    let commentCalls = 0;
+    const fetchMock = vi.fn(async (url) => {
+      if (String(url).startsWith('/api/reactions/me')) return jsonResponse({ ok: true });
+      if (String(url).startsWith('/api/comments?pageId=')) return jsonResponse({ ok: true, comments: [] });
+      if (url === '/api/session/init') return jsonResponse({ ok: true });
+      if (url === '/api/comments') {
+        commentCalls += 1;
+        if (commentCalls === 1) return jsonResponse({ ok: true, status: 'held', displayName: 'anon-hawk' });
+        return jsonResponse({ ok: false }, false, 500);
+      }
+      return jsonResponse({ ok: true, userReaction: null });
+    });
+
+    await app.initEngagementFeatures(document, fetchMock);
+    document.querySelector('script[data-turnstile-loader]').dispatchEvent(new Event('load'));
+
+    const form = document.querySelector('.comment-form');
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(document.querySelector('.comment-feedback').textContent).toContain(
+      'Comment submitted as anon-hawk and held for moderation checks.'
+    );
+
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(document.querySelector('.comment-feedback').textContent).toContain('comment_failed');
   });
 
   it('startApp orchestrates main initializers', async () => {
