@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 2800" role="img" aria-label="Success stories motif background">
+  <rect width="1200" height="2800" fill="#12252f"/>
+  <g stroke="#86b8cf" stroke-opacity="0.3" fill="none">
+    <path d="M120 240l230 0 110 120 250 0 120 150 280 0"/>
+    <path d="M120 840l220 0 120 130 260 0 110 150 290 0"/>
+    <path d="M120 1440l240 0 100 120 260 0 130 140 270 0"/>
+    <path d="M120 2040l230 0 120 120 250 0 120 150 280 0"/>
+  </g>
+  <g fill="#e8b43d" fill-opacity="0.34">
+    <circle cx="350" cy="240" r="18"/>
+    <circle cx="830" cy="510" r="18"/>
+    <circle cx="340" cy="840" r="18"/>
+    <circle cx="830" cy="1120" r="18"/>
+    <circle cx="360" cy="1440" r="18"/>
+    <circle cx="850" cy="1700" r="18"/>
+    <circle cx="350" cy="2040" r="18"/>
+    <circle cx="830" cy="2310" r="18"/>
+  </g>
+</svg>

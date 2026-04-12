@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineering Calm in Fault Analysis | MindfullyEmbedded</title>
+  <meta name="description" content="A practical workflow for debugging embedded faults without thrashing between guesses." />
+  <link rel="stylesheet" href="/css/global.css" />
+</head>
+<body class="page article-detail" data-section="articles" data-bg-image="/assets/backgrounds/articles-bg.svg">
+  <div class="parallax-bg" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="/">MindfullyEmbedded</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="/articles/" class="active">Articles</a>
+      <a href="/portfolio/">Portfolio</a>
+      <a href="/professional/">Bio</a>
+      <a href="/success-stories/">Success Stories</a>
+    </nav>
+  </header>
+
+  <main class="container section-shell article-shell">
+    <p class="eyebrow">Technical Article</p>
+    <h1>Engineering Calm in Fault Analysis</h1>
+    <p class="article-meta">2026-04-11 · 6 min</p>
+    <p class="lede">A practical workflow for debugging embedded faults without thrashing between guesses.</p>
+    <div class="tag-row"><span class="tag">embedded</span><span class="tag">debugging</span><span class="tag">workflow</span></div>
+    <article class="prose"><p>When a system fails in the field, panic is usually more expensive than the bug.</p>
+<p>My default loop is simple:</p>
+<ol>
+<li>Reproduce or tighten the failure boundary.</li>
+<li>Capture evidence before changing assumptions.</li>
+<li>Reduce the system until one variable explains the behavior.</li>
+</ol>
+<h2>A Useful Constraint</h2>
+<p>Treat every hypothesis as <em>temporary</em> until you can disprove its alternatives.</p>
+<p>That mindset keeps effort grounded in observable signals instead of intuition alone.</p>
+<h2>Why This Matters</h2>
+<p>In embedded work, the cost of an incorrect fix is often higher than the cost of slower diagnosis. A calm method is usually the fastest path to a durable result.</p>
+</article>
+  </main>
+
+  <!-- @site-footer -->
+  <script src="/js/main.js" defer></script>
+</body>
+</html>

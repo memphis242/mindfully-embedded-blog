@@ -1,19 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Character encoding and viewport -->
-  
-  <!-- Title and meta description -->
-  
-  <!-- Link to your CSS file -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Mindfully Embedded Blog</title>
+  <meta name="description" content="MindfullyEmbedded: technical writing, portfolio projects, and measurable client outcomes." />
+  <meta name="meb-cf-analytics-token" content="" />
+  <link rel="stylesheet" href="/css/global.css" />
 </head>
-<body>
-  <!-- Navigation goes here -->
-  
-  <!-- Main content goes here -->
-  
-  <!-- Footer goes here -->
-  
-  <!-- Link to your JS file (optional for now) -->
+<body class="page" data-section="home" data-bg-image="/assets/backgrounds/home-bg.svg">
+  <div class="parallax-bg" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="/">MindfullyEmbedded</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="/articles/">Articles</a>
+      <a href="/portfolio/">Portfolio</a>
+      <a href="/professional/">Bio</a>
+      <a href="/success-stories/">Success Stories</a>
+    </nav>
+  </header>
+
+  <main class="container section-shell">
+    <p class="eyebrow">Software, Hardware, Systems Engineering</p>
+    <h1>The Mindfully Embedded Blog</h1>
+    <p class="lede">
+      Embedded systems engineering articles, project breakdowns, how-to's, lessons learned, and working towards a better world.
+    </p>
+
+    <div class="hero-grid">
+      <article class="panel">
+        <h2>Articles</h2>
+        <p>Technical writing on systems, programming, architecture design, lessons learned.</p>
+        <a class="inline-link" href="/articles/">Browse all articles</a>
+      </article>
+      <article class="panel">
+        <h2>Projects</h2>
+        <p>A display shelf of projects with visual demos, detailed breakdowns, and engienering process.</p>
+        <a class="inline-link" href="/portfolio/">Visit portfolio</a>
+      </article>
+      <article class="panel">
+        <h2>Professional Profile</h2>
+        <p>Short bio, resume viewer, and direct contact links for employers, clients, and peers.</p>
+        <a class="inline-link" href="/professional/">Open bio page</a>
+      </article>
+    </div>
+
+    <h2 class="latest-published-heading">Latest Published</h2>
+    <section id="latest-articles" class="article-grid" aria-live="polite"></section>
+  </main>
+
+  <footer class="site-footer container">
+  <p>Abdulla Almosalami · Keep going. Keep growing. ☺</p>
+</footer>
+
+
+  <script src="/js/main.js" defer></script>
 </body>
 </html>
+
+
+

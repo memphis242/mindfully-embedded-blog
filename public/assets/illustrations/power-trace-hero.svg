@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-label="Power Trace hero image">
+  <rect width="1280" height="720" fill="#0f1d24"/>
+  <rect x="90" y="90" width="1100" height="540" rx="24" fill="#162a34" stroke="#364a53" stroke-width="4"/>
+  <rect x="150" y="150" width="980" height="420" rx="16" fill="#1b323d"/>
+  <g stroke="#223b47" stroke-width="2">
+    <line x1="170" y1="220" x2="1110" y2="220"/>
+    <line x1="170" y1="300" x2="1110" y2="300"/>
+    <line x1="170" y1="380" x2="1110" y2="380"/>
+    <line x1="170" y1="460" x2="1110" y2="460"/>
+  </g>
+  <polyline points="170,455 250,410 330,420 410,305 500,335 620,250 720,268 820,205 930,230 1110,180" fill="none" stroke="#86b8cf" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="1110" cy="180" r="11" fill="#e8b43d"/>
+  <text x="190" y="205" fill="#aacddd" font-family="JetBrains Mono, monospace" font-size="34">Power Profile Comparison</text>
+</svg>

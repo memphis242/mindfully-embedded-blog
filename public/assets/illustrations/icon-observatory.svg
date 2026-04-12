@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Fault Observatory icon">
+  <rect x="6" y="10" width="52" height="44" rx="10" fill="#223b47" stroke="#e8b43d" stroke-width="2"/>
+  <polyline points="14,42 24,34 31,37 40,22 50,18" fill="none" stroke="#86b8cf" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="50" cy="18" r="3" fill="#dd4f39"/>
+</svg>

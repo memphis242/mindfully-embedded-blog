@@ -4,10 +4,18 @@
   "description": "A personal blog built with raw HTML, CSS, and JavaScript fundamentals",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "build": "node scripts/build-articles.js && node scripts/apply-templates.js",
+    "start": "npm run build && node server.js",
+    "dev": "npm run build && node server.js"
   },
-  "keywords": ["blog", "personal-website"],
+  "keywords": [
+    "blog",
+    "personal-website"
+  ],
   "author": "Abdulla Almosalami",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.0"
+  }
 }

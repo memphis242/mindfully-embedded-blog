@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-label="Fault Observatory hero image">
+  <rect width="1280" height="720" fill="#0f1d24"/>
+  <rect x="80" y="80" width="1120" height="560" rx="20" fill="#162a34" stroke="#364a53" stroke-width="4"/>
+  <rect x="130" y="140" width="350" height="180" rx="12" fill="#223b47"/>
+  <rect x="130" y="360" width="350" height="210" rx="12" fill="#223b47"/>
+  <rect x="520" y="140" width="620" height="430" rx="12" fill="#1a313c"/>
+  <polyline points="560,480 650,420 740,455 850,300 960,340 1080,210" fill="none" stroke="#86b8cf" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="1080" cy="210" r="10" fill="#e8b43d"/>
+  <circle cx="960" cy="340" r="8" fill="#dd4f39"/>
+  <text x="160" y="210" fill="#aacddd" font-family="JetBrains Mono, monospace" font-size="34">Incident Signals</text>
+  <text x="160" y="430" fill="#aacddd" font-family="JetBrains Mono, monospace" font-size="30">Trace Timeline</text>
+</svg>

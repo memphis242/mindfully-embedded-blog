@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 2800" role="img" aria-label="Home technical motif background">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#162a34"/>
+      <stop offset="100%" stop-color="#0f1d24"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="2800" fill="url(#g)"/>
+  <g stroke="#86b8cf" stroke-opacity="0.35" fill="none">
+    <path d="M90 220h310l40 65h270"/>
+    <path d="M760 580h260l35 60h90"/>
+    <path d="M150 1120h410l35 75h260"/>
+    <path d="M740 1680h360l30 70h60"/>
+    <path d="M120 2250h290l45 55h330"/>
+  </g>
+  <g fill="#e8b43d" fill-opacity="0.45">
+    <circle cx="240" cy="330" r="6"/>
+    <circle cx="910" cy="640" r="8"/>
+    <circle cx="330" cy="1230" r="5"/>
+    <circle cx="980" cy="1720" r="7"/>
+    <circle cx="410" cy="2320" r="6"/>
+  </g>
+  <g stroke="#dd4f39" stroke-opacity="0.23" fill="none">
+    <circle cx="980" cy="250" r="130"/>
+    <circle cx="210" cy="940" r="160"/>
+    <circle cx="930" cy="1520" r="200"/>
+    <circle cx="270" cy="2140" r="180"/>
+  </g>
+</svg>

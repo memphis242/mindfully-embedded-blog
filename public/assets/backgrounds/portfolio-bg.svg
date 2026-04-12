@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 2800" role="img" aria-label="Portfolio motif background">
+  <rect width="1200" height="2800" fill="#102029"/>
+  <g fill="#223b47">
+    <rect x="80" y="460" width="1040" height="30" rx="14"/>
+    <rect x="80" y="980" width="1040" height="30" rx="14"/>
+    <rect x="80" y="1500" width="1040" height="30" rx="14"/>
+    <rect x="80" y="2020" width="1040" height="30" rx="14"/>
+  </g>
+  <g fill="#e8b43d" fill-opacity="0.22">
+    <rect x="220" y="380" width="90" height="70" rx="10"/>
+    <rect x="850" y="900" width="90" height="70" rx="10"/>
+    <rect x="280" y="1420" width="90" height="70" rx="10"/>
+    <rect x="760" y="1940" width="90" height="70" rx="10"/>
+  </g>
+  <g stroke="#86b8cf" stroke-opacity="0.3" fill="none">
+    <circle cx="400" cy="430" r="42"/>
+    <circle cx="770" cy="950" r="42"/>
+    <circle cx="470" cy="1470" r="42"/>
+    <circle cx="690" cy="1990" r="42"/>
+  </g>
+</svg>

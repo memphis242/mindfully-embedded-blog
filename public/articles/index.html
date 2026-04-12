@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Head content: meta tags, title, CSS link -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articles | MindfullyEmbedded</title>
+  <meta name="description" content="Technical articles on embedded systems and engineering lessons." />
+  <link rel="stylesheet" href="/css/global.css" />
 </head>
-<body>
-  <!-- Navigation -->
-  
-  <!-- Articles listing page content -->
-  
-  <!-- Footer -->
+<body class="page" data-section="articles" data-bg-image="/assets/backgrounds/articles-bg.svg">
+  <div class="parallax-bg" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="/">MindfullyEmbedded</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="/articles/" class="active">Articles</a>
+      <a href="/portfolio/">Portfolio</a>
+      <a href="/professional/">Bio</a>
+      <a href="/success-stories/">Success Stories</a>
+    </nav>
+  </header>
+
+  <main class="container section-shell">
+    <p class="eyebrow">Embedded Systems + Engineering Lessons</p>
+    <h1>Articles</h1>
+    <p class="lede">Practical notes from building systems, debugging in the real world, and making design tradeoffs with intent.</p>
+
+    <section class="article-grid" aria-label="Published articles">
+      <article class="article-card">
+  <h2><a href="/articles/generated/engineering-calm-in-fault-analysis.html">Engineering Calm in Fault Analysis</a></h2>
+  <p class="article-meta">2026-04-11 · 6 min</p>
+  <p>A practical workflow for debugging embedded faults without thrashing between guesses.</p>
+  <div class="tag-row"><span class="tag">embedded</span><span class="tag">debugging</span><span class="tag">workflow</span></div>
+</article>
+    </section>
+  </main>
+
+  <!-- @site-footer -->
+  <script src="/js/main.js" defer></script>
 </body>
 </html>

@@ -1,68 +1,59 @@
-# Mindfully Embedded Blog
+# MindfullyEmbedded
 
-A personal blog website built from scratch to learn web development fundamentals.
+MindfullyEmbedded is a dark-mode personal technical site built with plain HTML/CSS/JS, plus a minimal Node build script for Markdown articles.
 
-## Project Goals
+## Features
+- Article-first homepage and generated article pages
+- Bio page with inline PDF resume viewer + download CTA
+- Portfolio shelf with project detail pages and top-centered hero media
+- Success stories page with anonymized measurable outcomes
+- Section-specific parallax background motifs
 
-- Learn HTML, CSS, and JavaScript deeply
-- Build a blog with custom design and personality
-- Keep it simple: no frameworks, just the fundamentals
-
-## Project Structure
-
-```
-public/          - All static files served to browsers
-  ├── index.html           - Home page
-  ├── articles/            - Blog articles
-  ├── professional/        - Resume/CV and professional info
-  ├── portfolio/           - Project portfolio
-  ├── css/                 - Stylesheets
-  ├── js/                  - JavaScript files
-  └── assets/              - Images, fonts, etc.
-server.js        - Simple HTTP server for local development
-```
-
-## Getting Started
-
-1. **Run the server:**
+## Local Development
+1. Install dependencies:
    ```bash
-   node server.js
+   npm install
    ```
-   Or use npm:
+2. Build article pages from Markdown:
+   ```bash
+   npm run build
+   ```
+3. Run local server:
    ```bash
    npm start
    ```
+4. Open:
+   ```
+   http://localhost:3000
+   ```
 
-2. **Visit your site:**
-   Open your browser to: http://localhost:3000
+## Writing New Articles
+1. Add a Markdown file under `content/articles/`.
+2. Include required frontmatter keys:
+   - `title`
+   - `slug`
+   - `date`
+   - `summary`
+   - `tags`
+   - `readTime`
+   - `published`
+3. Run `npm run build`.
 
-3. **Start building:**
-   - Edit files in the `public/` directory
-   - Refresh your browser to see changes
+Generated files are written to:
+- `public/articles/generated/*.html`
+- `public/articles/articles.json`
+- `public/articles/index.html`
 
-## Learning Resources
+## Shared Footer Template
+- Footer source of truth: `templates/footer.html`
+- Build-time template injector: `scripts/apply-templates.js`
+- Pages use `<!-- @site-footer -->` during generation and are populated during `npm run build`.
 
-### HTML
-- **MDN HTML Tutorial**: https://developer.mozilla.org/en-US/docs/Learn/HTML
-- Focus on: semantic HTML, document structure, forms, accessibility
+## Cloudflare Pages Deployment
+- Build command: `npm run build`
+- Build output directory: `public`
+- Optional privacy-first analytics token can be set by filling the page meta value `meb-cf-analytics-token`.
 
-### CSS
-- **MDN CSS Tutorial**: https://developer.mozilla.org/en-US/docs/Learn/CSS
-- Focus on: box model, flexbox, grid, responsive design, animations
-
-### JavaScript
-- **MDN JavaScript Guide**: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide
-- **JavaScript.info**: https://javascript.info/
-- Focus on: DOM manipulation, events, fetch API, ES6+ features
-
-### Recommended Learning Path
-1. Start with HTML structure and semantic markup
-2. Add CSS styling (start simple, iterate on design)
-3. Add interactivity with JavaScript
-4. Learn browser DevTools for debugging
-5. Study responsive design and accessibility
-
-## Development Tips
-
-- Use your browser's Developer Tools (F12) constantly
-- Test in different browsers
+## Design Reference
+Canonical visual system specification:
+- `docs/visual-personality-plan.md`

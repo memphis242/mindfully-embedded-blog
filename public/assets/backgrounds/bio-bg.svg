@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 2800" role="img" aria-label="Bio motif background">
+  <rect width="1200" height="2800" fill="#11232c"/>
+  <g stroke="#86b8cf" stroke-opacity="0.27" fill="none">
+    <path d="M180 220v2360"/>
+    <path d="M1020 220v2360"/>
+    <path d="M180 420h840"/>
+    <path d="M180 920h840"/>
+    <path d="M180 1420h840"/>
+    <path d="M180 1920h840"/>
+    <path d="M180 2420h840"/>
+  </g>
+  <g fill="#e8b43d" fill-opacity="0.24">
+    <circle cx="220" cy="420" r="24"/>
+    <circle cx="980" cy="920" r="24"/>
+    <circle cx="220" cy="1420" r="24"/>
+    <circle cx="980" cy="1920" r="24"/>
+    <circle cx="220" cy="2420" r="24"/>
+  </g>
+  <g fill="#dd4f39" fill-opacity="0.14">
+    <rect x="270" y="290" width="660" height="120" rx="20"/>
+    <rect x="270" y="790" width="660" height="120" rx="20"/>
+    <rect x="270" y="1290" width="660" height="120" rx="20"/>
+    <rect x="270" y="1790" width="660" height="120" rx="20"/>
+    <rect x="270" y="2290" width="660" height="120" rx="20"/>
+  </g>
+</svg>

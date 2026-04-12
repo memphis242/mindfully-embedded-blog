@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 2800" role="img" aria-label="Articles motif background">
+  <rect width="1200" height="2800" fill="#13262f"/>
+  <g fill="none" stroke="#86b8cf" stroke-opacity="0.28" stroke-width="2">
+    <path d="M120 280h960"/>
+    <path d="M120 720h960"/>
+    <path d="M120 1160h960"/>
+    <path d="M120 1600h960"/>
+    <path d="M120 2040h960"/>
+    <path d="M120 2480h960"/>
+  </g>
+  <g fill="#e8b43d" fill-opacity="0.2">
+    <rect x="170" y="215" width="24" height="24" rx="4"/>
+    <rect x="926" y="655" width="24" height="24" rx="4"/>
+    <rect x="230" y="1095" width="24" height="24" rx="4"/>
+    <rect x="820" y="1535" width="24" height="24" rx="4"/>
+    <rect x="390" y="1975" width="24" height="24" rx="4"/>
+    <rect x="970" y="2415" width="24" height="24" rx="4"/>
+  </g>
+  <g stroke="#dd4f39" stroke-opacity="0.2" fill="none">
+    <path d="M170 200l90 90-90 90"/>
+    <path d="M930 640l90 90-90 90"/>
+    <path d="M230 1080l90 90-90 90"/>
+    <path d="M820 1520l90 90-90 90"/>
+    <path d="M390 1960l90 90-90 90"/>
+  </g>
+</svg>

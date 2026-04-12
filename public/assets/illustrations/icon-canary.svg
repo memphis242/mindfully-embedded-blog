@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Firmware Canary icon">
+  <rect x="7" y="11" width="50" height="42" rx="10" fill="#223b47" stroke="#e8b43d" stroke-width="2"/>
+  <path d="M18 40l8-12 7 6 13-14" fill="none" stroke="#86b8cf" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M45 20h7v7" fill="none" stroke="#dd4f39" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

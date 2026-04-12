@@ -1,13 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Head content -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio | MindfullyEmbedded</title>
+  <meta name="description" content="Project portfolio presented on a responsive display shelf with visual demos." />
+  <meta name="meb-cf-analytics-token" content="" />
+  <link rel="stylesheet" href="/css/global.css" />
 </head>
-<body>
-  <!-- Navigation -->
-  
-  <!-- Portfolio content -->
-  
-  <!-- Footer -->
+<body class="page" data-section="portfolio" data-bg-image="/assets/backgrounds/portfolio-bg.svg">
+  <div class="parallax-bg" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="/">MindfullyEmbedded</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="/articles/">Articles</a>
+      <a href="/portfolio/" class="active">Portfolio</a>
+      <a href="/professional/">Bio</a>
+      <a href="/success-stories/">Success Stories</a>
+    </nav>
+  </header>
+
+  <main class="container section-shell">
+    <p class="eyebrow">Display Shelf</p>
+    <h1>Portfolio</h1>
+    <p class="lede">A responsive display shelf of my projects over the years (that I can show).</p>
+
+    <section class="shelf" aria-label="Project display shelf">
+      <div class="shelf-row">
+        <a class="project-tile" href="/projects/fault-observatory.html">
+          <img class="project-icon" src="/assets/illustrations/icon-observatory.svg" alt="Observatory project icon" />
+          <strong>Fault Observatory</strong>
+          <span class="article-meta">Embedded diagnostics platform with timeline visual playback.</span>
+        </a>
+
+        <a class="project-tile" href="/projects/firmware-canary-lab.html">
+          <img class="project-icon" src="/assets/illustrations/icon-canary.svg" alt="Canary project icon" />
+          <strong>Firmware Canary Lab</strong>
+          <span class="article-meta">Safe release workflow for constrained edge deployments.</span>
+        </a>
+
+        <a class="project-tile" href="/projects/power-trace-kit.html">
+          <img class="project-icon" src="/assets/illustrations/icon-power.svg" alt="Power trace project icon" />
+          <strong>Power Trace Kit</strong>
+          <span class="article-meta">Measurement toolkit for low-power embedded design loops.</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+  <p>Abdulla Almosalami · Keep going. Keep growing. ☺</p>
+</footer>
+
+
+  <script src="/js/main.js" defer></script>
 </body>
 </html>
+
+
