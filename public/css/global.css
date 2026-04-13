@@ -457,6 +457,7 @@ h1 {
 }
 
 .comment-form input,
+.comment-form select,
 .comment-form textarea,
 .comment-reply-form input,
 .comment-reply-form textarea {
@@ -467,6 +468,19 @@ h1 {
   border-radius: 10px;
   padding: 0.55rem 0.65rem;
   font-family: inherit;
+}
+
+.comment-form input[type='checkbox'] {
+  width: auto;
+  justify-self: start;
+}
+
+[data-lead-feedback][data-state='error'] {
+  color: var(--danger-accent);
+}
+
+[data-lead-feedback][data-state='ok'] {
+  color: var(--success-accent);
 }
 
 .turnstile-wrap {

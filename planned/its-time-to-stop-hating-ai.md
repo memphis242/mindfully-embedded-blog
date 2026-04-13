@@ -21,7 +21,7 @@ My default loop is simple:
 
 ## A Useful Constraint
 
-Treat every hypothesis as *temporary* until you can disprove its alternatives.
+Treat every hypothesis as _temporary_ until you can disprove its alternatives.
 
 That mindset keeps effort grounded in observable signals instead of intuition alone.
 

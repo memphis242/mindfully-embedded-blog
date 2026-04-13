@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lead Intake Admin | MindfullyEmbedded</title>
+    <meta name="description" content="Admin lead intake dashboard" />
+    <link rel="stylesheet" href="/css/global.css" />
+  </head>
+  <body class="page" data-section="stories" data-bg-image="/assets/backgrounds/stories-bg.svg">
+    <div class="parallax-bg" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="/">MindfullyEmbedded</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/articles/">Articles</a>
+        <a href="/portfolio/">Portfolio</a>
+        <a href="/services/training/">Training</a>
+        <a href="/services/consulting/">Consulting</a>
+        <a href="/services/contracts/">Contracts</a>
+        <a href="/professional/">Bio</a>
+        <a href="/success-stories/">Success Stories</a>
+      </nav>
+    </header>
+
+    <main class="container section-shell">
+      <p class="eyebrow">Admin</p>
+      <h1>Lead Intake Dashboard</h1>
+      <p class="lede">Requires Cloudflare Access and service token header value for admin APIs.</p>
+
+      <label>
+        Admin service token
+        <input id="admin-token" type="password" placeholder="Paste x-admin-service-token value" />
+      </label>
+      <label>
+        Status filter
+        <select id="lead-status">
+          <option value="all">all</option>
+          <option value="new">new</option>
+          <option value="contacted">contacted</option>
+          <option value="closed">closed</option>
+          <option value="spam">spam</option>
+        </select>
+      </label>
+
+      <div class="contact-row">
+        <button class="btn" id="load-leads" type="button">Load leads</button>
+        <a class="btn subtle" href="/admin/moderation/">Open moderation dashboard</a>
+      </div>
+
+      <div id="admin-leads" class="article-grid"></div>
+    </main>
+
+    <footer class="site-footer container">
+      <p>Abdulla Almosalami ○ Keep going. Keep growing. ☺</p>
+    </footer>
+
+    <script type="module" src="/js/main.js"></script>
+    <script>
+      (() => {
+        const tokenInput = document.getElementById('admin-token');
+        const statusFilter = document.getElementById('lead-status');
+        const mount = document.getElementById('admin-leads');
+
+        function adminHeaders() {
+          return {
+            'Content-Type': 'application/json',
+            'x-admin-service-token': tokenInput.value.trim(),
+          };
+        }
+
+        async function loadLeads() {
+          mount.innerHTML = '<p class="article-meta">Loading leads...</p>';
+          const status = statusFilter.value;
+          const query = status && status !== 'all' ? `?status=${encodeURIComponent(status)}` : '';
+          const response = await fetch(`/api/admin/leads${query}`, { headers: adminHeaders() });
+          const payload = await response.json();
+
+          if (!response.ok || !payload.ok) {
+            mount.innerHTML = `<p class="article-meta">Error: ${payload.error || response.status}</p>`;
+            return;
+          }
+
+          const leads = payload.leads || [];
+          if (!leads.length) {
+            mount.innerHTML = '<p class="article-meta">No leads found.</p>';
+            return;
+          }
+
+          mount.innerHTML = '';
+          leads.forEach((lead) => {
+            const card = document.createElement('article');
+            card.className = 'article-card';
+            card.innerHTML = `
+              <h3>${lead.name} <span class="article-meta">(${lead.status})</span></h3>
+              <p class="article-meta">${lead.service_type} · ${lead.created_at}</p>
+              <p><strong>Email:</strong> ${lead.email}</p>
+              <p>${lead.message_raw}</p>
+              <label>
+                Internal note
+                <textarea rows="3" maxlength="2000">${lead.admin_notes || ''}</textarea>
+              </label>
+              <div class="contact-row">
+                <button class="btn subtle" data-status="new" type="button">Mark new</button>
+                <button class="btn subtle" data-status="contacted" type="button">Mark contacted</button>
+                <button class="btn subtle" data-status="closed" type="button">Mark closed</button>
+                <button class="btn subtle" data-status="spam" type="button">Mark spam</button>
+              </div>
+            `;
+
+            card.querySelectorAll('button[data-status]').forEach((btn) => {
+              btn.addEventListener('click', async () => {
+                const note = card.querySelector('textarea').value;
+                const body = {
+                  status: btn.dataset.status,
+                  note,
+                };
+                if (btn.dataset.status === 'spam') {
+                  body.markSpam = true;
+                }
+                const res = await fetch(`/api/admin/leads/${lead.id}`, {
+                  method: 'POST',
+                  headers: adminHeaders(),
+                  body: JSON.stringify(body),
+                });
+                const out = await res.json();
+                if (!res.ok || !out.ok) {
+                  alert(`Failed: ${out.error || res.status}`);
+                  return;
+                }
+                loadLeads();
+              });
+            });
+
+            mount.appendChild(card);
+          });
+        }
+
+        document.getElementById('load-leads').addEventListener('click', loadLeads);
+      })();
+    </script>
+  </body>
+</html>

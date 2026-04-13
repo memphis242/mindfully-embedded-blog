@@ -8,6 +8,7 @@ MindfullyEmbedded is my personal tech blog, where I include articles, a project 
 - Bio page with inline PDF resume viewer + download CTA
 - Portfolio shelf with project detail pages and top-centered hero media
 - Success stories page with anonymized measurable outcomes
+- Client services pages (training, consulting, project contracts) with secure quote-request forms
 - Section-specific parallax backgrounds
 - Anonymous likes/dislikes on article and project pages
 - Anonymous comments with one-level replies, optional pseudonym, and safe auto-generated fallback names
@@ -149,10 +150,13 @@ npm run security:secrets
 - `DELETE /api/admin/bans?id=...`
 - `GET /api/admin/digest`
 - `POST /api/admin/maintenance`
+- `GET /api/admin/leads`
+- `POST /api/admin/leads/:id`
 
 Admin UI:
 
 - `/admin/moderation/`
+- `/admin/leads/`
 
 ## Design Reference
 

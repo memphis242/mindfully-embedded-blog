@@ -89,6 +89,9 @@ function articlePageTemplate(article, htmlBody) {
     <nav class="site-nav" aria-label="Primary">
       <a href="/articles/" class="active">Articles</a>
       <a href="/portfolio/">Portfolio</a>
+      <a href="/services/training/">Training</a>
+      <a href="/services/consulting/">Consulting</a>
+      <a href="/services/contracts/">Contracts</a>
       <a href="/professional/">Bio</a>
       <a href="/success-stories/">Success Stories</a>
     </nav>
@@ -126,6 +129,9 @@ function articleIndexTemplate(cards) {
     <nav class="site-nav" aria-label="Primary">
       <a href="/articles/" class="active">Articles</a>
       <a href="/portfolio/">Portfolio</a>
+      <a href="/services/training/">Training</a>
+      <a href="/services/consulting/">Consulting</a>
+      <a href="/services/contracts/">Contracts</a>
       <a href="/professional/">Bio</a>
       <a href="/success-stories/">Success Stories</a>
     </nav>

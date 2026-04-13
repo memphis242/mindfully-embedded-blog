@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Training Services | MindfullyEmbedded</title>
+    <meta
+      name="description"
+      content="Embedded systems training engagements for teams that need practical, production-grounded upskilling."
+    />
+    <meta name="meb-cf-analytics-token" content="" />
+    <meta name="meb-turnstile-site-key" content="" />
+    <link rel="stylesheet" href="/css/global.css" />
+  </head>
+  <body class="page" data-section="services" data-bg-image="/assets/backgrounds/stories-bg.svg">
+    <div class="parallax-bg" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="/">MindfullyEmbedded</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/articles/">Articles</a>
+        <a href="/portfolio/">Portfolio</a>
+        <a href="/services/training/" class="active">Training</a>
+        <a href="/services/consulting/">Consulting</a>
+        <a href="/services/contracts/">Contracts</a>
+        <a href="/professional/">Bio</a>
+        <a href="/success-stories/">Success Stories</a>
+      </nav>
+    </header>
+
+    <main class="container section-shell">
+      <p class="eyebrow">Client Services</p>
+      <h1>Training</h1>
+      <p class="lede">
+        Team training focused on practical embedded systems engineering: debugging, architecture,
+        and robust firmware development practices.
+      </p>
+
+      <section class="story-grid" aria-label="Training details">
+        <article class="story-card">
+          <h2>What I can train</h2>
+          <p>Debugging workflows, fault analysis patterns, firmware quality guardrails, and delivery discipline.</p>
+        </article>
+        <article class="story-card">
+          <h2>Engagement format</h2>
+          <p>Hands-on workshops, code/design reviews, and structured follow-up recommendations for your team.</p>
+        </article>
+      </section>
+
+      <h2>Request Training</h2>
+      <form class="comment-form" data-lead-form data-service-type="training">
+        <label>
+          Name
+          <input name="name" type="text" maxlength="40" required />
+        </label>
+        <label>
+          Email
+          <input name="email" type="email" maxlength="254" required />
+        </label>
+        <label>
+          Message
+          <textarea
+            name="message"
+            rows="5"
+            maxlength="4000"
+            required
+            placeholder="Describe your team, goals, and training needs."
+          ></textarea>
+        </label>
+        <label>
+          <input name="consent" type="checkbox" required />
+          I consent to storage of this request and to being contacted about this inquiry.
+        </label>
+        <div class="turnstile-wrap" data-lead-turnstile></div>
+        <button class="btn" type="submit">Submit Training Request</button>
+      </form>
+      <p class="article-meta" data-lead-feedback aria-live="polite">
+        Typical first response time: within 48 hours.
+      </p>
+    </main>
+
+    <footer class="site-footer container">
+      <p>Abdulla Almosalami ○ Keep going. Keep growing. ☺</p>
+    </footer>
+
+    <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/leads.js"></script>
+  </body>
+</html>

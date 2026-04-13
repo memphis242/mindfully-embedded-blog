@@ -63,3 +63,23 @@ CREATE TABLE IF NOT EXISTS moderation_audit (
 );
 
 CREATE INDEX IF NOT EXISTS idx_moderation_audit_created_at ON moderation_audit(created_at);
+
+CREATE TABLE IF NOT EXISTS client_leads (
+  id TEXT PRIMARY KEY,
+  service_type TEXT NOT NULL CHECK (service_type IN ('training', 'consulting', 'contracts')),
+  session_id TEXT NOT NULL,
+  ip_hash TEXT NOT NULL,
+  ua_hash TEXT NOT NULL,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  message_raw TEXT NOT NULL,
+  consent_given INTEGER NOT NULL CHECK (consent_given IN (0, 1)),
+  status TEXT NOT NULL CHECK (status IN ('new', 'contacted', 'closed', 'spam')),
+  admin_notes TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_client_leads_created_at ON client_leads(created_at);
+CREATE INDEX IF NOT EXISTS idx_client_leads_status_created_at ON client_leads(status, created_at);
+CREATE INDEX IF NOT EXISTS idx_client_leads_service_created_at ON client_leads(service_type, created_at);

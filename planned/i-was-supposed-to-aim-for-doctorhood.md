@@ -20,4 +20,3 @@ My default loop is simple:
 3. Reduce the system until one variable explains the behavior.
 
 ## A Useful Constraint
-

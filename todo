@@ -1,8 +1,10 @@
-- comments on articles
+- contact page (have a project idea and need a quick prototype?)
+- training page
+- consulting page
+- contracting page
 - rss feed
 - article search
 - article filter
 - article thumbs up/down
-- contact page (have a project idea and need a quick prototype?)
 - fix footer template builder result indentation
-- html, js, css linter and static analysis tooling
+- fix coding-style 'npm run quality' warnings
