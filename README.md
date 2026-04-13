@@ -54,6 +54,21 @@ Generated files:
 - `public/articles/generated/*.html`
 - `public/articles/articles.json`
 - `public/articles/index.html`
+- `public/feed.xml`
+
+## RSS Feed
+
+- Feed URL: `/feed.xml`
+- Includes: published articles only (`published: true`)
+- Item payload:
+  - `<description>` = article summary
+  - `<content:encoded>` = full article HTML
+  - `<category>` = mapped from article tags
+- GUID strategy: canonical article URL (`isPermaLink="true"`)
+- Canonical base URL: `https://mindfullyembedded.com`
+- Discovery:
+  - RSS autodiscovery `<link rel="alternate" ...>` is added on article pages
+  - Visible “Subscribe via RSS” CTA appears on `/articles/`
 
 ## Shared Footer Template
 

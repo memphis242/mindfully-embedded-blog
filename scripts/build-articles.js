@@ -9,6 +9,8 @@ const CONTENT_DIR = path.join(ROOT, 'content', 'articles');
 const OUTPUT_DIR = path.join(ROOT, 'public', 'articles', 'generated');
 const ARTICLES_JSON = path.join(ROOT, 'public', 'articles', 'articles.json');
 const ARTICLES_INDEX = path.join(ROOT, 'public', 'articles', 'index.html');
+const FEED_XML = path.join(ROOT, 'public', 'feed.xml');
+const SITE_URL = 'https://mindfullyembedded.com';
 
 marked.setOptions({
   gfm: true,
@@ -71,6 +73,7 @@ function assertFrontmatter(meta, fileName) {
 
 function articlePageTemplate(article, htmlBody) {
   const tags = article.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
+  const articleAbsoluteUrl = `${SITE_URL}${article.url}`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -80,6 +83,8 @@ function articlePageTemplate(article, htmlBody) {
   <title>${escapeHtml(article.title)} | MindfullyEmbedded</title>
   <meta name="description" content="${escapeHtml(article.summary)}" />
   <meta name="meb-turnstile-site-key" content="" />
+  <link rel="alternate" type="application/rss+xml" title="MindfullyEmbedded RSS" href="${SITE_URL}/feed.xml" />
+  <link rel="canonical" href="${articleAbsoluteUrl}" />
   <link rel="stylesheet" href="/css/global.css" />
 </head>
 <body class="page article-detail" data-section="articles" data-bg-image="/assets/backgrounds/articles-bg.svg" data-page-id="article/${escapeHtml(article.slug)}">
@@ -120,6 +125,7 @@ function articleIndexTemplate(cards) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Articles | MindfullyEmbedded</title>
   <meta name="description" content="Technical articles on embedded systems and engineering lessons." />
+  <link rel="alternate" type="application/rss+xml" title="MindfullyEmbedded RSS" href="${SITE_URL}/feed.xml" />
   <link rel="stylesheet" href="/css/global.css" />
 </head>
 <body class="page" data-section="articles" data-bg-image="/assets/backgrounds/articles-bg.svg">
@@ -145,6 +151,7 @@ function articleIndexTemplate(cards) {
     <section class="article-grid" aria-label="Published articles">
       ${cards || '<p>No published articles yet.</p>'}
     </section>
+    <p class="article-meta"><a class="inline-link" href="/feed.xml">Subscribe via RSS</a></p>
   </main>
 
   <!-- @site-footer -->
@@ -164,6 +171,50 @@ function cardMarkup(article) {
   <p>${escapeHtml(article.summary)}</p>
   <div class="tag-row">${tags}</div>
 </article>`;
+}
+
+function escapeXml(input) {
+  return String(input)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function rssDate(dateString) {
+  return new Date(dateString).toUTCString();
+}
+
+function rssItem(article) {
+  const link = `${SITE_URL}${article.url}`;
+  const categories = article.tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join('');
+  return `<item>
+  <title>${escapeXml(article.title)}</title>
+  <link>${escapeXml(link)}</link>
+  <guid isPermaLink="true">${escapeXml(link)}</guid>
+  <pubDate>${escapeXml(rssDate(article.date))}</pubDate>
+  <description>${escapeXml(article.summary)}</description>
+  ${categories}
+  <content:encoded><![CDATA[${article.htmlBody}]]></content:encoded>
+</item>`;
+}
+
+function rssFeed(articles) {
+  const latestDate = articles.length ? rssDate(articles[0].date) : rssDate(new Date().toISOString());
+  const items = articles.map(rssItem).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+  <title>MindfullyEmbedded</title>
+  <link>${SITE_URL}/articles/</link>
+  <description>Notes from one embedded systems engineer learning in public, shipping real work, and trying to stay both rigorous and human along the way.</description>
+  <language>en-us</language>
+  <lastBuildDate>${escapeXml(latestDate)}</lastBuildDate>
+  ${items}
+</channel>
+</rss>
+`;
 }
 
 function collectArticles() {
@@ -218,6 +269,7 @@ function writeOutputs(articles) {
 
   const cards = articles.map(cardMarkup).join('\n');
   fs.writeFileSync(ARTICLES_INDEX, articleIndexTemplate(cards), 'utf8');
+  fs.writeFileSync(FEED_XML, rssFeed(articles), 'utf8');
 }
 
 function run() {
@@ -245,6 +297,10 @@ module.exports = {
   articlePageTemplate,
   articleIndexTemplate,
   cardMarkup,
+  escapeXml,
+  rssDate,
+  rssItem,
+  rssFeed,
   collectArticles,
   writeOutputs,
   run,

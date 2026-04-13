@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+  <title>MindfullyEmbedded</title>
+  <link>https://mindfullyembedded.com/articles/</link>
+  <description>Notes from one embedded systems engineer learning in public, shipping real work, and trying to stay both rigorous and human along the way.</description>
+  <language>en-us</language>
+  <lastBuildDate>Sat, 11 Apr 2026 00:00:00 GMT</lastBuildDate>
+  <item>
+  <title>Engineering Calm in Fault Analysis</title>
+  <link>https://mindfullyembedded.com/articles/generated/engineering-calm-in-fault-analysis.html</link>
+  <guid isPermaLink="true">https://mindfullyembedded.com/articles/generated/engineering-calm-in-fault-analysis.html</guid>
+  <pubDate>Sat, 11 Apr 2026 00:00:00 GMT</pubDate>
+  <description>A practical workflow for debugging embedded faults without thrashing between guesses.</description>
+  <category>embedded</category><category>debugging</category><category>workflow</category>
+  <content:encoded><![CDATA[<p>When a system fails in the field, panic is usually more expensive than the bug.</p>
+<p>My default loop is simple:</p>
+<ol>
+<li>Reproduce or tighten the failure boundary.</li>
+<li>Capture evidence before changing assumptions.</li>
+<li>Reduce the system until one variable explains the behavior.</li>
+</ol>
+<h2>A Useful Constraint</h2>
+<p>Treat every hypothesis as <em>temporary</em> until you can disprove its alternatives.</p>
+<p>That mindset keeps effort grounded in observable signals instead of intuition alone.</p>
+<h2>Why This Matters</h2>
+<p>In embedded work, the cost of an incorrect fix is often higher than the cost of slower diagnosis. A calm method is usually the fastest path to a durable result.</p>
+]]></content:encoded>
+</item>
+</channel>
+</rss>
