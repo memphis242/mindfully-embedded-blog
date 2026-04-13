@@ -49,4 +49,16 @@ describe('reactions me route', () => {
     const body = await res.json();
     expect(body.userReaction).toBe('like');
   });
+
+  it('returns null when reaction row exists without reaction value', async () => {
+    const db = createDbMock([
+      {
+        match: 'SELECT reaction FROM reactions',
+        first: () => ({}),
+      },
+    ]);
+    const req = new Request('https://example.com/api/reactions/me?pageId=article/test');
+    const res = await onRequestGet({ request: req, env: { DB: db } });
+    expect((await res.json()).userReaction).toBeNull();
+  });
 });

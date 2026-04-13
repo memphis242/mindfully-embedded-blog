@@ -220,6 +220,7 @@ function run() {
   console.log(`Built ${articles.length} published article(s).`);
 }
 
+/* c8 ignore start */
 if (require.main === module) {
   try {
     run();
@@ -228,6 +229,7 @@ if (require.main === module) {
     process.exitCode = 1;
   }
 }
+/* c8 ignore stop */
 
 module.exports = {
   ensureDir,

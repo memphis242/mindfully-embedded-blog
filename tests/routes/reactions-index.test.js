@@ -98,4 +98,16 @@ describe('reactions index route', () => {
     expect(body.userReaction).toBe('dislike');
     expect(db.calls.some((c) => c.sql.includes('INSERT INTO reactions'))).toBe(true);
   });
+
+  it('accepts like reaction branch', async () => {
+    const db = createDbMock([{ match: 'INSERT INTO reactions', run: () => ({ success: true }) }]);
+    const req = new Request('https://example.com/api/reactions', {
+      method: 'POST',
+      body: JSON.stringify({ reaction: 'like', pageId: 'article/test' }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const res = await onRequestPost({ request: req, env: { DB: db } });
+    expect(res.status).toBe(200);
+    expect((await res.json()).userReaction).toBe('like');
+  });
 });

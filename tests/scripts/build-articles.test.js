@@ -17,6 +17,25 @@ function write(p, c) {
 }
 
 describe('build-articles script', () => {
+  it('covers ROOT resolution with and without MEB_ROOT', () => {
+    const prevRoot = process.env.MEB_ROOT;
+    try {
+      process.env.MEB_ROOT = '/tmp/meb-custom-root';
+      let modPath = require.resolve('../../scripts/build-articles.js');
+      delete require.cache[modPath];
+      let mod = require(modPath);
+      expect(typeof mod.run).toBe('function');
+
+      process.env.MEB_ROOT = '';
+      modPath = require.resolve('../../scripts/build-articles.js');
+      delete require.cache[modPath];
+      mod = require(modPath);
+      expect(typeof mod.assertFrontmatter).toBe('function');
+    } finally {
+      process.env.MEB_ROOT = prevRoot;
+    }
+  });
+
   it('builds article outputs from markdown', () => {
     const root = mkTmpRoot();
 
@@ -69,5 +88,73 @@ Hello`
     } finally {
       process.env.MEB_ROOT = prevRoot;
     }
+  });
+
+  it('covers helper branches and template fallbacks', () => {
+    const modPath = require.resolve('../../scripts/build-articles.js');
+    delete require.cache[modPath];
+    const mod = require(modPath);
+
+    expect(mod.escapeHtml(`<'&">`)).toContain('&lt;');
+    expect(mod.articleIndexTemplate('')).toContain('No published articles yet');
+
+    expect(() =>
+      mod.assertFrontmatter(
+        {
+          title: 'T',
+          slug: 's',
+          date: '2026-01-01',
+          summary: 'S',
+          tags: 'not-array',
+          readTime: '1 min',
+          published: true,
+        },
+        'x.md'
+      )
+    ).toThrow(/tags/);
+
+    expect(() =>
+      mod.assertFrontmatter(
+        {
+          title: 'T',
+          slug: 's',
+          date: '2026-01-01',
+          summary: 'S',
+          tags: [],
+          readTime: '1 min',
+          published: 'yes',
+        },
+        'x.md'
+      )
+    ).toThrow(/published/);
+
+    expect(() =>
+      mod.assertFrontmatter(
+        {
+          title: 'T',
+          slug: 's',
+          date: 'not-a-date',
+          summary: 'S',
+          tags: [],
+          readTime: '1 min',
+          published: true,
+        },
+        'x.md'
+      )
+    ).toThrow(/invalid 'date'/);
+  });
+
+  it('covers removeDirContents no-op and deletion branch', () => {
+    const root = mkTmpRoot();
+    const modPath = require.resolve('../../scripts/build-articles.js');
+    delete require.cache[modPath];
+    const mod = require(modPath);
+    const missing = path.join(root, 'missing-dir');
+    expect(() => mod.removeDirContents(missing)).not.toThrow();
+
+    const dir = path.join(root, 'dir');
+    write(path.join(dir, 'file.txt'), 'x');
+    mod.removeDirContents(dir);
+    expect(fs.readdirSync(dir)).toEqual([]);
   });
 });

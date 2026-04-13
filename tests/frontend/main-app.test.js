@@ -140,6 +140,28 @@ describe('main-app module', () => {
     expect(state.turnstileToken).toBe('abc');
   });
 
+  it('loadTurnstile clears token on expired-callback and error-callback', () => {
+    let capturedConfig = null;
+    const container = document.createElement('div');
+    const state = { turnstileToken: 'seed-token' };
+    const render = vi.fn((_el, config) => {
+      capturedConfig = config;
+      config.callback('fresh-token');
+    });
+    const win = { turnstile: { render } };
+
+    app.loadTurnstile('site-key', container, state, document, win);
+    document.querySelector('script[data-turnstile-loader]').dispatchEvent(new Event('load'));
+
+    expect(state.turnstileToken).toBe('fresh-token');
+    capturedConfig['expired-callback']();
+    expect(state.turnstileToken).toBeNull();
+
+    state.turnstileToken = 'seed-token-2';
+    capturedConfig['error-callback']();
+    expect(state.turnstileToken).toBeNull();
+  });
+
   it('loadTurnstile load callback exits when turnstile is unavailable', () => {
     const container = document.createElement('div');
     const state = { turnstileToken: 'existing' };
