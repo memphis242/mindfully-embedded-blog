@@ -89,18 +89,7 @@ function articlePageTemplate(article, htmlBody) {
 </head>
 <body class="page article-detail" data-section="articles" data-bg-image="/assets/backgrounds/articles-bg.svg" data-page-id="article/${escapeHtml(article.slug)}">
   <div class="parallax-bg" aria-hidden="true"></div>
-  <header class="site-header">
-    <a class="brand" href="/">MindfullyEmbedded</a>
-    <nav class="site-nav" aria-label="Primary">
-      <a href="/articles/" class="active">Articles</a>
-      <a href="/portfolio/">Portfolio</a>
-      <a href="/services/training/">Training</a>
-      <a href="/services/consulting/">Consulting</a>
-      <a href="/services/contracts/">Contracts</a>
-      <a href="/professional/">Bio</a>
-      <a href="/success-stories/">Success Stories</a>
-    </nav>
-  </header>
+  <!-- @site-header -->
 
   <main class="container section-shell article-shell">
     <p class="eyebrow">Technical Article</p>
@@ -130,18 +119,7 @@ function articleIndexTemplate(cards) {
 </head>
 <body class="page" data-section="articles" data-bg-image="/assets/backgrounds/articles-bg.svg">
   <div class="parallax-bg" aria-hidden="true"></div>
-  <header class="site-header">
-    <a class="brand" href="/">MindfullyEmbedded</a>
-    <nav class="site-nav" aria-label="Primary">
-      <a href="/articles/" class="active">Articles</a>
-      <a href="/portfolio/">Portfolio</a>
-      <a href="/services/training/">Training</a>
-      <a href="/services/consulting/">Consulting</a>
-      <a href="/services/contracts/">Contracts</a>
-      <a href="/professional/">Bio</a>
-      <a href="/success-stories/">Success Stories</a>
-    </nav>
-  </header>
+  <!-- @site-header -->
 
   <main class="container section-shell">
     <p class="eyebrow">Embedded Systems + Engineering Lessons</p>
